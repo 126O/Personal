@@ -1,0 +1,38 @@
+if not readfile or not writefile or not getcustomasset then
+    warn("Error: your exec is shit so it won't work")
+    return
+end
+
+local success, content = pcall(readfile, "pov.webm")
+
+if not success then
+    local downloadSuccess, audioData = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/126O/Personal/main/pov.webm")
+    if downloadSuccess and audioData then
+        writefile("pov.webm", audioData)
+    else
+        warn("ERROR this didn't work mb.")
+        return
+    end
+end
+
+local cloneref = cloneref or function(o) return o end
+local coregui = cloneref(game:GetService("CoreGui"))
+
+local vid = Instance.new("ScreenGui")
+vid.Name = "videoGui"
+vid.IgnoreGuiInset = true
+vid.ResetOnSpawn = false
+vid.DisplayOrder = 9999
+vid.Parent = coregui
+
+local actual = Instance.new("VideoFrame")
+actual.Name = "video"
+actual.BackgroundTransparency = 1
+actual.Size = UDim2.new(1, 0, 1, 0)
+actual.Position = UDim2.new(0, 0, 0, 0)
+actual.Visible = true
+actual.Playing = true
+actual.Looped = true
+
+actual.Video = getcustomasset("pov.webm")
+actual.Parent = vid
